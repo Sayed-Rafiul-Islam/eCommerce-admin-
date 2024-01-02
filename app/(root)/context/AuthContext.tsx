@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { signUp } from "../actions/signUp";
 
 interface AuthContextProps {
-  user: boolean | null;
-  login: (email: string, password: string) => Promise<string>;
+  user: object;
+  setUser : React.Dispatch<React.SetStateAction<object>>;
+  login: (email: string, password: string) => Promise<number>;
   logout: () => void;
-  signup: (email: string, password: string, userName: string) => Promise<string>;
+  signup: (email: string, password: string, userName: string) => Promise<number>;
   setCartItemNumber: React.Dispatch<React.SetStateAction<number>>;
   cartItemNumber: number;
 }
@@ -23,60 +24,65 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
   children,
 }: AuthContextProviderProps) => {
   const router = useRouter();
-  const [user, setUser] = useState<boolean | null>(null);
+  const [user, setUser] = useState<object>({});
   const [cartItemNumber, setCartItemNumber] = useState(0);
 
   // sign up
-  const signup = async (
-    email: string,
-    password: string,
-    userName: string
-  ): Promise<string> => {
-    const {accessToken,status} = await signUp(email, password, userName);
+  const signup = async (email: string,password: string,userName: string): Promise<number> => {
+    const {result,status} = await signUp(email, password, userName);
     if (status === 200) {
-      localStorage.setItem("accessToken", accessToken);
-      setUser(true);
+      localStorage.setItem("accessToken", result.accessToken);
+      localStorage.setItem("currentUser", JSON.stringify(result))
+      setUser(result);
       router.push("/");
-      return "User Successfully Created";
-    } else if (status === 400) {
-      return "Email already in use";
-    } else {
-      return "Something went wrong"
+      return status;
+    }
+    else {
+      setUser({})
+      return status
     }
   };
 
-  const login = async (
-    email: string,
-    password: string
-  ): Promise<string> => {
-    const { message, result, accessToken } = await logIn(email, password);
-    if (result) {
-      localStorage.setItem("accessToken", accessToken);
-      router.push("/");
+  const login = async (email: string,password: string): Promise<number> => {
+
+    const { result,status } = await logIn(email, password);
+    if (status === 200) {
+      localStorage.setItem("accessToken", result.accessToken);
+      localStorage.setItem("currentUser", JSON.stringify(result))
       setUser(result);
-      return "hi";
+      router.push("/");
+      return status
     } else {
-      return message;
+      setUser({})
+      return status;
     }
   };
 
   const logout = (): void => {
     localStorage.removeItem("accessToken");
-    setUser(false);
+    localStorage.removeItem("currentUser");
+    setUser({});
   };
 
   useEffect(() => {
-    const isUser = localStorage.getItem("accessToken");
-    const isCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const len = isCart.length;
-    isUser && setUser(true);
-    if (isCart) {
-      setCartItemNumber(len);
+    const isUser = localStorage.getItem("currentUser");
+    if(!isUser) {
+      router.push("/authentication")
+    } else {
+      const currentUser : any  = localStorage.getItem("currentUser")
+      setUser(JSON.parse(currentUser))
     }
+    // const isCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    // const len = isCart.length;
+    // isUser && setUser(true);
+    // if (isCart) {
+    //   setCartItemNumber(len);
+    // }
   }, []);
 
   const contextValue: AuthContextProps = {
     user,
+    setUser,
     login,
     logout,
     signup,

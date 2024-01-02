@@ -9,7 +9,8 @@ export const signUp = async (email: string, password: string, userName: string) 
         body : JSON.stringify({email,password,userName}),
         cache : "no-store"
     }) 
-    const {accessToken} = await res.json()
-    return {accessToken,status : res.status}
+    const result = await res.json()
+    const status = res.status
+    return {result,status}
 
 }

@@ -3,44 +3,46 @@
 import {  useUserAuth } from "@/app/(root)/context/AuthContext"
 import { useState } from "react"
 
-export default function SignUpForm() {
+export default function LogInForm() {
 
-    const {signup} = useUserAuth()
+    const {login} = useUserAuth()
     const [loading,setLoading] = useState(true)
-    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [ message, setMessage] = useState('')
 
     const handleSubmit = async () => {
-        setMessage("Signing up...")
-        if (name === '' || email === '' || password === '') {
+        setLoading(true)
+        setMessage("Logging in...")
+        
+        if (email === '' || password === '') {
+            setLoading(false)
             setMessage("Fill in all the fields")
         }
         else {
-            const status = await signup(email,name,password)
-            if (status === 400) {
+            const status = await login(email,password)
+            if (status === 403) {
                 setLoading(false)
-                setMessage("Email already in use")
-            }
-            else {
+                setMessage("Wrong Password")
+            } else if (status === 401) {
+                setLoading(false) 
+                setMessage("No account with this Email")
+            } else if (status === 200) {
                 setLoading(true)
-                setMessage("User created successfully")
+                setMessage("Login Successful")
             }
+            
         } 
     }
   return (
     <div className="flex flex-col rounded-lg gap-4 p-4">
         <div className="bg-indigo-300 flex flex-col w- full rounded-lg gap-4 p-4">
-            <label htmlFor="">User Name :</label>
-            <input className="text-black" type="text" value={name} onChange={(e)=> setName(e.target.value)} />
             <label htmlFor="">Email : </label>
             <input className="text-black" type="email" value={email} onChange={(e)=> setEmail(e.target.value)} />
             <label htmlFor="">Password : </label>
-            <input className="text-black" type="password" value={password} onChange={(e)=> setPassword(e.target.value)} /> \
-
+            <input className="text-black" type="password" value={password} onChange={(e)=> setPassword(e.target.value)} />
             <button onClick={handleSubmit}>
-                Sign Up
+                Log In
             </button>
         </div>
 
