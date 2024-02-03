@@ -1,7 +1,8 @@
+import {  getStoreById } from "@/app/actions/store"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
     params
 } : {
@@ -13,9 +14,16 @@ export default function DashboardLayout({
     if (!userId) {
         redirect('/sign-in')
     }
+
+    const store = await getStoreById(userId ,params.storeId)
+
+    if(!store) {
+      redirect('/')
+    }
   return (
-    <div>
-      
-    </div>
+    <>
+      <h1>This will be a navbar</h1>
+      {children}
+    </>
   )
 }
