@@ -1,0 +1,32 @@
+import { getStoreById } from "@/app/actions/store"
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
+import { SettingForm } from "./components/setting-form"
+
+interface SettingPageProps {
+    params : { storeId : string }
+}
+
+const SettingPage : React.FC<SettingPageProps> = async ({params}) => {
+
+    const { userId } = auth()
+
+    const store = await getStoreById(userId, params.storeId)
+
+    if (!store) {
+        redirect("/")
+    }
+
+    if (!userId) {
+        redirect('/sign-in')
+    }
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <SettingForm initialData={store} />
+      </div>
+    </div>
+  )
+}
+
+export default SettingPage

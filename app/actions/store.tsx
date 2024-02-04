@@ -20,11 +20,11 @@ export const addStore = async (name : string) => {
 }
 
 export const getStoreById = async (
-    userId: string, 
+    userId: string | null, 
     storeId: string
     ) => {
-    const stores = await axios(`http://localhost:5000/api/getStoresbyId?storeId=${storeId}&userId=${userId}`)
-    return stores
+    const store = await axios(`http://localhost:5000/api/getStoresbyId?storeId=${storeId}&userId=${userId}`)
+    return store.data[0]
 }
 
 
@@ -32,5 +32,12 @@ export const getFirstStore = async (
     userId: string,
     ) => {
     const {data} =  await axios(`http://localhost:5000/api/getFirstStore?userId=${userId}`)
+    return data
+}
+
+export const getStores = async (
+    userId: string,
+    ) => {
+    const {data} =  await axios(`http://localhost:5000/api/getStores?userId=${userId}`)
     return data
 }
