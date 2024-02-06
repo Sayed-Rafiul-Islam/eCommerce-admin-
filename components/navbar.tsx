@@ -13,7 +13,7 @@ export default async function Navbar() {
         redirect("/sign-in")
     }
 
-    const stores = await getStores(userId)
+    const stores = await getStores()
   return (
     <div className='border-b'>
       <div className='flex h-16 items-center px-4 '>

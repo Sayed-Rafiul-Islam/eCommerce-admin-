@@ -13,7 +13,7 @@ const DashboardPage : React.FC<DashboardPageProps> = async ({
     const store = await getStoreById(userId, params.storeId)
   return (
     <div>
-      active store : {store.name}
+      active store : {store?.name}
     </div>
   )
 }
