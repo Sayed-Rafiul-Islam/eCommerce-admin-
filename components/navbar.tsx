@@ -20,7 +20,7 @@ export default async function Navbar() {
         <div>
             <StoreSwitcher items={stores} />
         </div>
-        <div>
+        <div className='ml-4'>
             <MainNav />
         </div>
         <div className='ml-auto flex items-center space-x-4'>

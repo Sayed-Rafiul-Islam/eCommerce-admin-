@@ -2,81 +2,123 @@
 
 import { auth } from "@clerk/nextjs"
 import axios from "axios"
+import { getStoreById } from "./store"
 
-interface ImageUploadProps {
+interface newBillboard {
+    storeId : string | string[]
     label : string,
     imageUrl : string,
+    createdAt : Date,
+    updatedAt : Date
+}
+interface updatedBillboard {
+    billboardId : string | string[],
+    storeId : string | string[]
+    label : string,
+    imageUrl : string,
+    updatedAt : Date
 }
 
 
 export const createBillboard = async (
-    billboardId : string | string[],
-    data : ImageUploadProps
+    billboard : newBillboard
 ) => {
     const { userId } = auth()
     if (!userId) {
         const status = 401
         return status
     }
-    console.log([billboardId,userId,data])
-    // if (!name) {
-    //     const status = 400
-    //     return status
-    // }
+    if (!billboard.label || !billboard.storeId || !billboard.imageUrl) {
+        const status = 400
+        return status
+    }
 
-    // const {data} = await axios.post(`http://localhost:5000/api/createBillboard?storeId=${billboardId}`,{userId})
-    // return data
+    const storeByUserId = await getStoreById(userId, billboard.storeId)
+
+    if (!storeByUserId) {
+        const status = 403
+        return status
+    }
+
+    const {status} = await axios.post(`http://localhost:5000/api/${billboard.storeId}/billboards`,billboard)
+    return status
 }
 
 export const getBillboardById = async (
-    billboardId: string
+    billboardId: string,
+    storeId : string
     ) => {
-    const billboard = await axios(`http://localhost:5000/api/getBillboardbyId?billboardId=${billboardId}`)
+        if (!billboardId) {
+            const status = 400
+            return status
+        }
+    const billboard = await axios(`http://localhost:5000/api/${storeId}/billboards/${billboardId}`)
     return billboard.data
 }
 
 
-export const getFirstStore = async (
-    userId: string,
-    ) => {
-    const {data} =  await axios(`http://localhost:5000/api/getFirstStore?userId=${userId}`)
-    return data[0]
-}
-
-export const getStores = async () => {
+export const getBillboards = async (
+    storeId : string | string[]
+) => {
     const {userId} =auth()
-    const {data} =  await axios(`http://localhost:5000/api/getStores?userId=${userId}`)
+    if (!userId) {
+        const status = 401
+        return status
+    }
+    if (!storeId) {
+        const status = 400
+        return status
+    }
+    const {data} =  await axios(`http://localhost:5000/api/${storeId}/billboards`)
     return data
 }
 
 export const updateBillboard = async (
-    billboardId : string | string[],
-    data : ImageUploadProps,
+    updatedBillboard : updatedBillboard,
 
-    ) => {
-        const { userId } = auth()
-        console.log([billboardId,userId,data])
-    // if (!userId) {
-    //     const status = 401
-    //     return status
-    // }
-    // if (!billboardId) {
-    //     const status = 400
-    //     return status
-    // }
-    // if (!billboardId) {
-    //     const status = 400
-    //     return status
-    // }
-    
-    // const {status} = await axios.patch(`http://localhost:5000/api/updateBillboard`,{userId,billboardId,name})
-    // return status
-}
-
-export const DeleteStores = async (
-    storeId: string | string[],
     ) => {
     const { userId } = auth()
-    const {data} =  await axios.delete(`http://localhost:5000/api/deleteStore?storeId=${storeId}&userId=${userId}`)
-    return data
+    if (!userId) {
+        const status = 401
+        return status
+    }
+    if (!updatedBillboard.billboardId || !updatedBillboard.imageUrl || !updatedBillboard.label) {
+        const status = 400
+        return status
+    }
+
+    const storeByUserId = await getStoreById(userId, updatedBillboard.storeId)
+
+    if (!storeByUserId) {
+        const status = 403
+        return status
+    }
+    
+    const {status} = await axios.patch(`http://localhost:5000/api/${updatedBillboard.storeId}/billboards/${updatedBillboard.billboardId}`,updatedBillboard)
+    return status
+}
+
+export const deleteBillboard = async (
+    billboardId: string | string[],
+    storeId: string | string[]
+    ) => {
+        const { userId } = auth()
+        if (!userId) {
+            const status = 401
+            return status
+        }
+        if (!billboardId) {
+            const status = 400
+            return status
+        }
+
+        
+    const storeByUserId = await getStoreById(userId, storeId)
+
+    if (!storeByUserId) {
+        const status = 403
+        return status
+    }
+    const {status} =  await axios.delete(`http://localhost:5000/api/${storeId}/billboards/${billboardId}`)
+    return status
 }

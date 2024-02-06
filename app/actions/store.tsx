@@ -21,7 +21,7 @@ export const addStore = async (name : string) => {
 
 export const getStoreById = async (
     userId: string | null, 
-    storeId: string
+    storeId: string | string[]
     ) => {
     const store = await axios(`http://localhost:5000/api/getStoresbyId?storeId=${storeId}&userId=${userId}`)
     return store.data[0]

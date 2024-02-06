@@ -68,12 +68,8 @@ export const SettingForm : React.FC<SettingFormProps> = ({
         try {
             setLoading(true)
             await DeleteStores(storeId)
-            const stores = await getStores()
-            if (stores.length === 0) {
-                window.location.assign(`/`)
-            } else {
-                router.push('/')
-            }
+            router.push('/')
+            router.refresh()
             toast.success("Store deleted.")
 
 
@@ -133,7 +129,7 @@ export const SettingForm : React.FC<SettingFormProps> = ({
             <Separator />
             <ApiALert 
             title='NEXT_PUBLIC_API_URL' 
-            description={`${origin}/api/${storeId}`} 
+            description={`${origin}/${storeId}`} 
             variant='public'
             />
         </>

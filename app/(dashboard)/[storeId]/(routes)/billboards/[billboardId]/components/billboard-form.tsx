@@ -13,11 +13,9 @@ import { Heading } from "@/components/ui/heading"
 import { Separator } from "@/components/ui/separator"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { DeleteStores } from '@/app/actions/store'
 import { AlertModal } from '@/components/modals/alert-modal'
-import { useOrigin } from '@/hooks/use-origin'
 import ImageUpload from '@/components/ui/image-upload'
-import { createBillboard, updateBillboard } from '@/app/actions/billboards'
+import { createBillboard, deleteBillboard, updateBillboard } from '@/app/actions/billboards'
 
 
 type SettingsFormValues = z.infer<typeof formSchema>
@@ -46,8 +44,7 @@ export const BillboardForm : React.FC<BillboardFormProps> = ({
 }) => {
 
     const router = useRouter()
-    const {billboardId} = useParams()
-    const origin = useOrigin()
+    const {billboardId, storeId} = useParams()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -65,16 +62,30 @@ export const BillboardForm : React.FC<BillboardFormProps> = ({
 
     const onSubmit = async (data : SettingsFormValues) => {
         try {
-            console.log(data)
             setLoading(true)
             if (initialData) {
-                await updateBillboard(billboardId, data)
+                const updatedBillboard = {
+                    billboardId,
+                    storeId,
+                    label : data.label,
+                    imageUrl : data.imageUrl,
+                    updatedAt : new Date()
+                }
+                await updateBillboard(updatedBillboard)
             } else {
-                await createBillboard(billboardId, data)
+                const newBillboard = {
+                    storeId,
+                    label : data.label,
+                    imageUrl : data.imageUrl,
+                    createdAt : new Date(),
+                    updatedAt : new Date()
+                }
+                await createBillboard(newBillboard)
             }
 
-            // router.refresh()
-            // toast.success(`${toastMessage}`)
+            router.push(`/${storeId}/billboards`)
+            router.refresh()
+            toast.success(`${toastMessage}`)
         } catch (error) {
             toast.error("Something went wrong.")
         } finally {
@@ -84,17 +95,11 @@ export const BillboardForm : React.FC<BillboardFormProps> = ({
 
     const onDelete = async () => {
         try {
-            // setLoading(true)
-            // await DeleteStores(storeId)
-            // const stores = await getStores()
-            // if (stores.length === 0) {
-            //     window.location.assign(`/`)
-            // } else {
-            //     router.push('/')
-            // }
-            // toast.success("Store deleted.")
-
-
+            setLoading(true)
+            await deleteBillboard(billboardId,storeId)
+            router.push(`/${storeId}/billboards`)
+            router.refresh()
+            toast.success("Billboard deleted.")
         } catch (error) {
             toast.error("Make sure you removed all products and categories first.")
         } finally {

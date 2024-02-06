@@ -4,10 +4,10 @@ import { BillboardForm } from "./components/billboard-form";
 const BillboardPage = async ({
     params
 } : {
-    params : { billboardId : string}
+    params : { billboardId : string, storeId : string}
 }) => {
-
-    const billboard = await getBillboardById(params.billboardId)
+    const billboard = await getBillboardById(params.billboardId, params.storeId)
+    
     return ( 
         <div className="flex-col">
             <div  className="flex-1 p-8 pt-6 space-y-4">
