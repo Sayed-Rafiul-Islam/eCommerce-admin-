@@ -55,6 +55,7 @@ export const SettingForm : React.FC<SettingFormProps> = ({
         try {
             setLoading(true)
             await UpdateStores(storeId, data.name)
+            router.push(`/${storeId}`)
             router.refresh()
             toast.success("Store Updated.")
         } catch (error) {

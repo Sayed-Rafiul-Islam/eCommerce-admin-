@@ -8,8 +8,8 @@ import { getCategories } from '@/app/actions/categories'
 interface CategoryItem {
     _id : string,
     name : string,
-    billboardId : string,
-    createdAt : string
+    createdAt : string,
+    billboardId : { label : string }
 }
 
 const CategoriesPage = async ({
@@ -23,7 +23,7 @@ const CategoriesPage = async ({
     const formattedCategories : CategoryColumn[] = categories.map(({_id,name,billboardId,createdAt} : CategoryItem) => ({
         id : _id,
         name,
-        billboardId,
+        billboardName : billboardId.label,
         createdAt : format(createdAt,"MMMM do, yyyy")
     }))
 

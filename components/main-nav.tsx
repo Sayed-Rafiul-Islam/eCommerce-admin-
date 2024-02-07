@@ -41,6 +41,20 @@ export function MainNav({
             pathname === `/${params.storeId}/sizes/${params.sizeId}`
         },
         {
+            href : `/${params.storeId}/colors`,
+            label : "Colors",
+            active : pathname === `/${params.storeId}/colors` ||
+            pathname === `/${params.storeId}/colors/new` ||
+            pathname === `/${params.storeId}/colors/${params.sizeId}`
+        },
+        {
+            href : `/${params.storeId}/products`,
+            label : "Products",
+            active : pathname === `/${params.storeId}/products` ||
+            pathname === `/${params.storeId}/products/new` ||
+            pathname === `/${params.storeId}/products/${params.sizeId}`
+        },
+        {
             href : `/${params.storeId}/settings`,
             label : "Settings",
             active : pathname === `/${params.storeId}/settings`
