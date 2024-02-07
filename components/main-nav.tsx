@@ -29,7 +29,16 @@ export function MainNav({
         {
             href : `/${params.storeId}/categories`,
             label : "Categories",
-            active : pathname === `/${params.storeId}/categories`
+            active : pathname === `/${params.storeId}/categories` ||
+            pathname === `/${params.storeId}/categories/new` ||
+            pathname === `/${params.storeId}/categories/${params.categoryId}`
+        },
+        {
+            href : `/${params.storeId}/sizes`,
+            label : "Sizes",
+            active : pathname === `/${params.storeId}/sizes` ||
+            pathname === `/${params.storeId}/sizes/new` ||
+            pathname === `/${params.storeId}/sizes/${params.sizeId}`
         },
         {
             href : `/${params.storeId}/settings`,
