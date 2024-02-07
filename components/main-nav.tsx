@@ -45,14 +45,21 @@ export function MainNav({
             label : "Colors",
             active : pathname === `/${params.storeId}/colors` ||
             pathname === `/${params.storeId}/colors/new` ||
-            pathname === `/${params.storeId}/colors/${params.sizeId}`
+            pathname === `/${params.storeId}/colors/${params.colorId}`
         },
         {
             href : `/${params.storeId}/products`,
             label : "Products",
             active : pathname === `/${params.storeId}/products` ||
             pathname === `/${params.storeId}/products/new` ||
-            pathname === `/${params.storeId}/products/${params.sizeId}`
+            pathname === `/${params.storeId}/products/${params.productId}`
+        },
+        {
+            href : `/${params.storeId}/orders`,
+            label : "Orders",
+            active : pathname === `/${params.storeId}/orders` ||
+            pathname === `/${params.storeId}/orders/new` ||
+            pathname === `/${params.storeId}/orders/${params.orderId}`
         },
         {
             href : `/${params.storeId}/settings`,

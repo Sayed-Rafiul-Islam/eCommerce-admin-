@@ -4,15 +4,15 @@ import { auth } from "@clerk/nextjs"
 import axios from "axios"
 import { getStoreById } from "./store"
 
-interface NewSizes {
+interface NewOrder {
     storeId : string | string[]
     name : string,
     value : string,
     createdAt : Date,
     updatedAt : Date
 }
-interface UpdatedSizes {
-    sizeId : string | string[],
+interface UpdatedOrder {
+    OrderId : string | string[],
     storeId : string | string[]
     name : string,
     value : string,
@@ -20,7 +20,7 @@ interface UpdatedSizes {
 }
 
 
-export const getSizes = async (
+export const getOrders = async (
     storeId : string | string[]
 ) => {
     const {userId} = auth()
@@ -32,49 +32,49 @@ export const getSizes = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`http://localhost:5000/api/${storeId}/sizes`)
+    const {data} =  await axios(`http://localhost:5000/api/${storeId}/orders`)
     return data
 }
 
-export const getSizeById = async (
-    sizesId: string,
+export const getOrderById = async (
+    ordersId: string,
     storeId : string
     ) => {
-        if (!sizesId) {
+        if (!ordersId) {
             const status = 400
             return status
         }
-    const sizes = await axios(`http://localhost:5000/api/${storeId}/sizes/${sizesId}`)
-    return sizes.data
+    const orders = await axios(`http://localhost:5000/api/${storeId}/orders/${ordersId}`)
+    return orders.data
 }
 
-export const createSize = async (
-    sizes : NewSizes
+export const createOrder = async (
+    order : NewOrder
 ) => {
     const { userId } = auth()
     if (!userId) {
         const status = 401
         return status
     }
-    if (!sizes.name || !sizes.storeId || !sizes.value) {
+    if (!order.name || !order.storeId || !order.value) {
         const status = 400
         return status
     }
 
-    const storeByUserId = await getStoreById(userId, sizes.storeId)
+    const storeByUserId = await getStoreById(userId, order.storeId)
 
     if (!storeByUserId) {
         const status = 403
         return status
     }
 
-    const {status} = await axios.post(`http://localhost:5000/api/${sizes.storeId}/sizes`,sizes)
+    const {status} = await axios.post(`http://localhost:5000/api/${order.storeId}/orders`,order)
     return status
 }
 
 
-export const updateSize = async (
-    updatedsizes : UpdatedSizes,
+export const updateOrder = async (
+    updatedOrder : UpdatedOrder,
 
     ) => {
     const { userId } = auth()
@@ -82,24 +82,24 @@ export const updateSize = async (
         const status = 401
         return status
     }
-    if (!updatedsizes.sizeId || !updatedsizes.storeId || !updatedsizes.name || !updatedsizes.value) {
+    if (!updatedOrder.OrderId || !updatedOrder.storeId || !updatedOrder.name || !updatedOrder.value) {
         const status = 400
         return status
     }
 
-    const storeByUserId = await getStoreById(userId, updatedsizes.storeId)
+    const storeByUserId = await getStoreById(userId, updatedOrder.storeId)
 
     if (!storeByUserId) {
         const status = 403
         return status
     }
     
-    const {status} = await axios.patch(`http://localhost:5000/api/${updatedsizes.storeId}/sizes/${updatedsizes.sizeId}`,updatedsizes)
+    const {status} = await axios.patch(`http://localhost:5000/api/${updatedOrder.storeId}/orders/${updatedOrder.OrderId}`,updatedOrder)
     return status
 }
 
-export const deleteSize = async (
-    sizesId: string | string[],
+export const deleteOrder = async (
+    ordersId: string | string[],
     storeId: string | string[]
     ) => {
         const { userId } = auth()
@@ -107,7 +107,7 @@ export const deleteSize = async (
             const status = 401
             return status
         }
-        if (!sizesId) {
+        if (!ordersId) {
             const status = 400
             return status
         }
@@ -119,6 +119,6 @@ export const deleteSize = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`http://localhost:5000/api/${storeId}/sizes/${sizesId}`)
+    const {status} =  await axios.delete(`http://localhost:5000/api/${storeId}/orders/${ordersId}`)
     return status
 }
