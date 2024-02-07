@@ -44,7 +44,7 @@ export const getProducts = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${storeId}/products`)
+    const {data} =  await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/products`)
     return data
 }
 
@@ -56,7 +56,7 @@ export const getProductById = async (
             const status = 400
             return status
         }
-    const products = await axios(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${storeId}/products/${productsId}`)
+    const products = await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/products/${productsId}`)
     return products.data
 }
 
@@ -87,7 +87,7 @@ export const createProduct = async (
         return status
     }
 
-    const {status} = await axios.post(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${product.storeId}/products`,product)
+    const {status} = await axios.post(`https://e-commerce-admin-server-seven.vercel.app/api/${product.storeId}/products`,product)
     return status
 }
 
@@ -121,7 +121,7 @@ export const updateProduct = async (
         return status
     }
     
-    const {status} = await axios.patch(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${updatedProducts.storeId}/products/${updatedProducts.productId}`,updatedProducts)
+    const {status} = await axios.patch(`https://e-commerce-admin-server-seven.vercel.app/api/${updatedProducts.storeId}/products/${updatedProducts.productId}`,updatedProducts)
     return status
 }
 
@@ -146,6 +146,6 @@ export const deleteProduct = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${storeId}/products/${productsId}`)
+    const {status} =  await axios.delete(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/products/${productsId}`)
     return status
 }
