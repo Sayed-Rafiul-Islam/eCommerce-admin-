@@ -32,7 +32,7 @@ export const getOrders = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`http://localhost:5000/api/${storeId}/orders`)
+    const {data} =  await axios(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${storeId}/orders`)
     return data
 }
 
@@ -44,7 +44,7 @@ export const getOrderById = async (
             const status = 400
             return status
         }
-    const orders = await axios(`http://localhost:5000/api/${storeId}/orders/${ordersId}`)
+    const orders = await axios(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${storeId}/orders/${ordersId}`)
     return orders.data
 }
 
@@ -68,7 +68,7 @@ export const createOrder = async (
         return status
     }
 
-    const {status} = await axios.post(`http://localhost:5000/api/${order.storeId}/orders`,order)
+    const {status} = await axios.post(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${order.storeId}/orders`,order)
     return status
 }
 
@@ -94,7 +94,7 @@ export const updateOrder = async (
         return status
     }
     
-    const {status} = await axios.patch(`http://localhost:5000/api/${updatedOrder.storeId}/orders/${updatedOrder.OrderId}`,updatedOrder)
+    const {status} = await axios.patch(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${updatedOrder.storeId}/orders/${updatedOrder.OrderId}`,updatedOrder)
     return status
 }
 
@@ -119,6 +119,6 @@ export const deleteOrder = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`http://localhost:5000/api/${storeId}/orders/${ordersId}`)
+    const {status} =  await axios.delete(`hhttps://e-commerce-admin-server-seven.vercel.app/api/${storeId}/orders/${ordersId}`)
     return status
 }
