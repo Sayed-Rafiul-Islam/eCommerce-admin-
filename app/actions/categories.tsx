@@ -40,7 +40,7 @@ export const createCategory = async (
         return status
     }
 
-    const {status} = await axios.post(`https://e-commerce-admin-server-seven.vercel.app/api/${category.storeId}/categories`,category)
+    const {status} = await axios.post(`http://localhost:5000/api/${category.storeId}/categories`,category)
     return status
 }
 
@@ -52,7 +52,7 @@ export const getCategoryById = async (
             const status = 400
             return status
         }
-    const category = await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/categories/${categoryId}`)
+    const category = await axios(`http://localhost:5000/api/${storeId}/categories/${categoryId}`)
     return category.data
 }
 
@@ -69,7 +69,7 @@ export const getCategories = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/categories`)
+    const {data} =  await axios(`http://localhost:5000/api/${storeId}/categories`)
     return data
 }
 
@@ -94,7 +94,7 @@ export const updateCategory = async (
         return status
     }
     
-    const {status} = await axios.patch(`https://e-commerce-admin-server-seven.vercel.app/api/${updatedcategory.storeId}/categories/${updatedcategory.categoryId}`,updatedcategory)
+    const {status} = await axios.patch(`http://localhost:5000/api/${updatedcategory.storeId}/categories/${updatedcategory.categoryId}`,updatedcategory)
     return status
 }
 
@@ -119,6 +119,6 @@ export const deleteCategory = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/categories/${categoryId}`)
+    const {status} =  await axios.delete(`http://localhost:5000/api/${storeId}/categories/${categoryId}`)
     return status
 }
