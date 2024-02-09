@@ -6,9 +6,10 @@ import { OrderClient } from "./components/client"
 import { OrderColumn } from "./components/columns"
 import { getOrders } from '@/app/actions/orders'
 
-interface OrderedItem {
-    orderId : string,
-    product : {
+
+
+interface Item {
+    orderedItem : {
         _id : string,
         name : string,
         isFeatured : boolean,
@@ -18,13 +19,14 @@ interface OrderedItem {
         categoryId : { name : string  },
         sizeId : { name : string  },
         colorId : { value : string  }
-    }
+    },
+    _id : string
 }
 
 interface Order {
     _id : string,
     storeId : string,
-    orderedItems : OrderedItem[],
+    orderedItems : Item[],
     isPaid : boolean,
     phone : string,
     address : string,
@@ -40,17 +42,17 @@ const OrdersPage = async ({
     const orders = await getOrders(params.storeId)
 
     const formattedorders : OrderColumn[] = orders.map(({_id,orderedItems,isPaid,phone,address,createdAt} : Order) => ({
+        // const test = orderedItems.map((orderedItem) => orderedItem.orderedItem.name).join(", ")
         id : _id,
         phone,
         address,
-        products : orderedItems.map((orderedItem) => orderedItem.product.name).join(', '),
-        totalPrice : formatter.format(orderedItems.reduce((total, item) => {
-            return total + Number(item.product.price)
+        products : orderedItems.map((orderedItem) => orderedItem.orderedItem.name).join(', '),
+        totalPrice : formatter.format(orderedItems.reduce((total, {orderedItem}) => {
+            return total + Number(orderedItem.price)
         },0)),
         isPaid,
         createdAt : format(createdAt,"MMMM do, yyyy")
     }))
-
 
     return (
         <div className="flex-col">

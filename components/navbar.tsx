@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { MainNav } from '@/components/main-nav'
 import StoreSwitcher from '@/components/store-switcher'
 import { getStores } from '@/app/actions/store'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export default async function Navbar() {
 
@@ -24,6 +25,7 @@ export default async function Navbar() {
             <MainNav />
         </div>
         <div className='ml-auto flex items-center space-x-4'>
+            <ThemeToggle />
             <UserButton afterSignOutUrl='/' />
         </div>
         

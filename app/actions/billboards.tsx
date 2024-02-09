@@ -40,7 +40,7 @@ export const createBillboard = async (
         return status
     }
 
-    const {status} = await axios.post(`https://e-commerce-admin-server-seven.vercel.app/api/${billboard.storeId}/billboards`,billboard)
+    const {status} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${billboard.storeId}/billboards`,billboard)
     return status
 }
 
@@ -52,7 +52,7 @@ export const getBillboardById = async (
             const status = 400
             return status
         }
-    const billboard = await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/billboards/${billboardId}`)
+    const billboard = await axios(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/billboards/${billboardId}`)
     return billboard.data
 }
 
@@ -69,7 +69,7 @@ export const getBillboards = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/billboards`)
+    const {data} =  await axios(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/billboards`)
     return data
 }
 
@@ -94,7 +94,7 @@ export const updateBillboard = async (
         return status
     }
     
-    const {status} = await axios.patch(`https://e-commerce-admin-server-seven.vercel.app/api/${updatedBillboard.storeId}/billboards/${updatedBillboard.billboardId}`,updatedBillboard)
+    const {status} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/${updatedBillboard.storeId}/billboards/${updatedBillboard.billboardId}`,updatedBillboard)
     return status
 }
 
@@ -119,6 +119,6 @@ export const deleteBillboard = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/billboards/${billboardId}`)
+    const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/billboards/${billboardId}`)
     return status
 }

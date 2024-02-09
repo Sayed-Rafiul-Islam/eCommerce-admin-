@@ -32,7 +32,7 @@ export const getOrders = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/orders`)
+    const {data} =  await axios(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/orders`)
     return data
 }
 
@@ -44,7 +44,7 @@ export const getOrderById = async (
             const status = 400
             return status
         }
-    const orders = await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/orders/${ordersId}`)
+    const orders = await axios(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/orders/${ordersId}`)
     return orders.data
 }
 
@@ -68,7 +68,7 @@ export const createOrder = async (
         return status
     }
 
-    const {status} = await axios.post(`https://e-commerce-admin-server-seven.vercel.app/api/${order.storeId}/orders`,order)
+    const {status} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${order.storeId}/orders`,order)
     return status
 }
 
@@ -94,7 +94,7 @@ export const updateOrder = async (
         return status
     }
     
-    const {status} = await axios.patch(`https://e-commerce-admin-server-seven.vercel.app/api/${updatedOrder.storeId}/orders/${updatedOrder.OrderId}`,updatedOrder)
+    const {status} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/${updatedOrder.storeId}/orders/${updatedOrder.OrderId}`,updatedOrder)
     return status
 }
 
@@ -119,6 +119,6 @@ export const deleteOrder = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/orders/${ordersId}`)
+    const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/orders/${ordersId}`)
     return status
 }

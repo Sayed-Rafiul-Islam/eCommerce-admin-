@@ -32,7 +32,7 @@ export const getColors = async (
         const status = 400
         return status
     }
-    const {data} =  await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/colors`)
+    const {data} =  await axios(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/colors`)
     return data
 }
 
@@ -44,7 +44,7 @@ export const getColorById = async (
             const status = 400
             return status
         }
-    const colors = await axios(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/colors/${colorId}`)
+    const colors = await axios(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/colors/${colorId}`)
     return colors.data
 }
 
@@ -68,7 +68,7 @@ export const createColor = async (
         return status
     }
 
-    const {status} = await axios.post(`https://e-commerce-admin-server-seven.vercel.app/api/${color.storeId}/colors`,color)
+    const {status} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${color.storeId}/colors`,color)
     return status
 }
 
@@ -94,7 +94,7 @@ export const updateColor = async (
         return status
     }
     
-    const {status} = await axios.patch(`https://e-commerce-admin-server-seven.vercel.app/api/${updatedcolor.storeId}/colors/${updatedcolor.colorId}`,updatedcolor)
+    const {status} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/${updatedcolor.storeId}/colors/${updatedcolor.colorId}`,updatedcolor)
     return status
 }
 
@@ -119,6 +119,6 @@ export const deleteColor = async (
         const status = 403
         return status
     }
-    const {status} =  await axios.delete(`https://e-commerce-admin-server-seven.vercel.app/api/${storeId}/colors/${colorId}`)
+    const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/colors/${colorId}`)
     return status
 }
