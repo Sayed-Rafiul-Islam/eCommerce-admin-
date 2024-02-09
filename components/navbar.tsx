@@ -28,7 +28,6 @@ export default async function Navbar() {
             <ThemeToggle />
             <UserButton afterSignOutUrl='/' />
         </div>
-        
       </div>
     </div>
   )
