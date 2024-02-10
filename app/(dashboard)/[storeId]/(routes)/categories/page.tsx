@@ -23,7 +23,7 @@ const CategoriesPage = async ({
     const formattedCategories : CategoryColumn[] = categories.map(({_id,name,billboardId,createdAt} : CategoryItem) => ({
         id : _id,
         name,
-        billboardName : billboardId.label,
+        billboardName : billboardId?.label,
         createdAt : format(createdAt,"MMMM do, yyyy")
     }))
 
