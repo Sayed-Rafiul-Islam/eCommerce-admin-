@@ -10,7 +10,8 @@ export type ProductColumn = {
     price : string,
     category : string,
     size : string,
-    color : string  
+    color : string,
+    quantity : number | string,
     isFeatured : boolean,
     isArchieved : boolean,
     createdAt : string,

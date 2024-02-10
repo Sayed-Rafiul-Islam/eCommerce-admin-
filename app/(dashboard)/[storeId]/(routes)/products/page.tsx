@@ -45,7 +45,7 @@ const ProductsPage = async ({
         isFeatured,
         isArchieved : isArchieved,
         price : formatter.format(price),
-        quantity,
+        quantity : quantity === 0 ? 'Stock out' : quantity,
         category : categoryId.name,
         size : sizeId.name,
         color : colorId.value,
