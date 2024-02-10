@@ -20,7 +20,8 @@ interface Item {
         sizeId : { name : string  },
         colorId : { value : string  }
     },
-    _id : string
+    _id : string,
+    quantity : number
 }
 
 interface Order {
@@ -42,11 +43,10 @@ const OrdersPage = async ({
     const orders = await getOrders(params.storeId)
 
     const formattedorders : OrderColumn[] = orders.map(({_id,orderedItems,isPaid,phone,address,createdAt} : Order) => ({
-        // const test = orderedItems.map((orderedItem) => orderedItem.orderedItem.name).join(", ")
         id : _id,
         phone,
         address,
-        products : orderedItems.map((orderedItem) => orderedItem.orderedItem.name).join(', '),
+        products : orderedItems.map((orderedItem) => orderedItem.orderedItem.name + ` [${orderedItem.quantity}]`).join(', '),
         totalPrice : formatter.format(orderedItems.reduce((total, {orderedItem}) => {
             return total + Number(orderedItem.price)
         },0)),
