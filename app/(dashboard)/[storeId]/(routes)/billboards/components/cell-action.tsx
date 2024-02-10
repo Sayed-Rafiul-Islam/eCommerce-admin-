@@ -36,11 +36,15 @@ export const CellAction : React.FC<CellActionProps> = ({data}) => {
     const onDelete = async () => {
         try {
             setLoading(true)
-            await deleteBillboard(data.id,storeId)
-            router.refresh()
-            toast.success("Billboard deleted.")
+            const {status,message} = await deleteBillboard(data.id,storeId)
+            if (status === 200) {
+                router.refresh()
+                toast.success(`${message}`)
+            } else {
+                toast.error(`${message}`)
+            }
         } catch (error) {
-            toast.error("Make sure you removed all products and categories first.")
+            toast.error("")
         } finally {
             setLoading(false)
             setOpen(false)

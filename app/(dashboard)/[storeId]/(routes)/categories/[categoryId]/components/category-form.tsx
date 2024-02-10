@@ -120,10 +120,14 @@ export const CategoryForm : React.FC<CategoryFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true)
-            await deleteCategory(categoryId,storeId)
-            router.push(`/${storeId}/categories`)
-            router.refresh()
-            toast.success("Category deleted.")
+            const {status,message} = await deleteCategory(categoryId,storeId)
+            if (status === 200) {
+                router.push(`/${storeId}/categories`)
+                router.refresh()
+                toast.success(`${message}`)
+            } else {
+                toast.error(`${message}`)
+            }
         } catch (error) {
             toast.error("Make sure you removed all products using this categories first.")
         } finally {

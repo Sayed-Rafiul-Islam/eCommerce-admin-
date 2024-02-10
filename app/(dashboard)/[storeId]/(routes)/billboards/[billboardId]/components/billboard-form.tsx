@@ -96,10 +96,14 @@ export const BillboardForm : React.FC<BillboardFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true)
-            await deleteBillboard(billboardId,storeId)
-            router.push(`/${storeId}/billboards`)
-            router.refresh()
-            toast.success("Billboard deleted.")
+            const {status,message} = await deleteBillboard(billboardId,storeId)
+            if (status === 200) {
+                router.push(`/${storeId}/billboards`)
+                router.refresh()
+                toast.success(`${message}`)
+            } else {
+                toast.error(`${message}`)
+            }
         } catch (error) {
             toast.error("Make sure you removed all products and categories first.")
         } finally {

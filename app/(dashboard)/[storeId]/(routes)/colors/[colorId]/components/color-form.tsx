@@ -95,10 +95,14 @@ export const ColorForm : React.FC<ColorFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true)
-            await deleteColor(colorId,storeId)
-            router.push(`/${storeId}/colors`)
-            router.refresh()
-            toast.success("color deleted.")
+            const {status,message} = await deleteColor(colorId,storeId)
+            if (status === 200) {
+                router.push(`/${storeId}/colors`)
+                router.refresh()
+                toast.success(`${message}`)
+            } else {
+                toast.error(`${message}`)
+            }
         } catch (error) {
             toast.error("Make sure you removed all products using this color first.")
         } finally {

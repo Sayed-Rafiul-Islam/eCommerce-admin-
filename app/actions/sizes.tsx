@@ -3,6 +3,22 @@
 import { auth } from "@clerk/nextjs"
 import axios from "axios"
 import { getStoreById } from "./store"
+import { getProducts } from "./products"
+
+interface Product {
+    name : string,
+    price : number,
+    quantity : number,
+    images : { url : string}[],
+    storeId : string | string[],
+    categoryId : string,
+    sizeId : { _id : string} ,
+    colorId : string,
+    isFeatured : boolean | undefined,
+    isArchieved : boolean | undefined,
+    createdAt : Date,
+    updatedAt : Date,
+}
 
 interface NewSizes {
     storeId : string | string[]
@@ -103,22 +119,32 @@ export const deleteSize = async (
     storeId: string | string[]
     ) => {
         const { userId } = auth()
+        const storeByUserId = await getStoreById(userId, storeId)
+        const products = await getProducts(storeId)
+        const isSize = products.filter((product : Product) => product.sizeId._id === sizesId)
         if (!userId) {
             const status = 401
-            return status
+            const message = 'Unauthorized'
+            return {status, message}
         }
-        if (!sizesId) {
+        else if (!sizesId) {
             const status = 400
-            return status
+            const message = 'Size ID required'
+            return {status, message}
         }
-
-        
-    const storeByUserId = await getStoreById(userId, storeId)
-
-    if (!storeByUserId) {
-        const status = 403
-        return status
-    }
-    const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/sizes/${sizesId}`)
-    return status
+        else if (!storeByUserId) {
+            const status = 403
+            const message = 'Forbidden'
+            return {status, message}
+        }
+        else if (isSize.length > 0) {
+            const status = 400
+            const message = 'Make sure you removed all products using this size first.'
+            return {status, message}
+        } else {
+            const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/sizes/${sizesId}`)
+            const message = "Size deleted."
+            return {status, message}
+        }
+ 
 }

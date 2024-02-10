@@ -3,6 +3,22 @@
 import { auth } from "@clerk/nextjs"
 import axios from "axios"
 import { getStoreById } from "./store"
+import { getProducts } from "./products"
+
+interface Product {
+    name : string,
+    price : number,
+    quantity : number,
+    images : { url : string}[],
+    storeId : string | string[],
+    categoryId : { _id : string}
+    sizeId : { _id : string} ,
+    colorId : { _id : string}
+    isFeatured : boolean | undefined,
+    isArchieved : boolean | undefined,
+    createdAt : Date,
+    updatedAt : Date,
+}
 
 interface NewColor {
     storeId : string | string[]
@@ -103,22 +119,31 @@ export const deleteColor = async (
     storeId: string | string[]
     ) => {
         const { userId } = auth()
+        const storeByUserId = await getStoreById(userId, storeId)
+        const products = await getProducts(storeId)
+        const isColor = products.filter((product : Product) => product.colorId._id === colorId)
         if (!userId) {
             const status = 401
-            return status
+            const message = 'Unauthorized'
+            return {status, message}
         }
-        if (!colorId) {
+        else if (!colorId) {
             const status = 400
-            return status
+            const message = 'Color ID required'
+            return {status, message}
         }
-
-        
-    const storeByUserId = await getStoreById(userId, storeId)
-
-    if (!storeByUserId) {
-        const status = 403
-        return status
-    }
-    const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/colors/${colorId}`)
-    return status
+        else if (!storeByUserId) {
+            const status = 403
+            const message = 'Forbidden'
+            return {status, message}
+        }
+        else if (isColor.length > 0) {
+            const status = 400
+            const message = 'Make sure you removed all products using this color first.'
+            return {status, message}
+        } else {
+            const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/colors/${colorId}`)
+            const message = "Color deleted."
+            return {status, message}
+        }    
 }

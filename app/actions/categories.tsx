@@ -3,6 +3,22 @@
 import { auth } from "@clerk/nextjs"
 import axios from "axios"
 import { getStoreById } from "./store"
+import { getProducts } from "./products"
+
+interface Product {
+    name : string,
+    price : number,
+    quantity : number,
+    images : { url : string}[],
+    storeId : string | string[],
+    categoryId : { _id : string}
+    sizeId : { _id : string} ,
+    colorId : { _id : string}
+    isFeatured : boolean | undefined,
+    isArchieved : boolean | undefined,
+    createdAt : Date,
+    updatedAt : Date,
+}
 
 interface newCategory {
     storeId : string | string[],
@@ -103,22 +119,32 @@ export const deleteCategory = async (
     storeId: string | string[]
     ) => {
         const { userId } = auth()
+        const storeByUserId = await getStoreById(userId, storeId)
+        const products = await getProducts(storeId)
+        const isCategory = products.filter((product : Product) => product.categoryId._id === categoryId)
+
         if (!userId) {
             const status = 401
-            return status
+            const message = 'Unauthorized'
+            return {status, message}
         }
-        if (!categoryId) {
+        else if (!categoryId) {
             const status = 400
-            return status
+            const message = 'Category ID required'
+            return {status, message}
+        }
+        else if (!storeByUserId) {
+            const status = 403
+            const message = 'Forbidden'
+            return {status, message}
+        } else if (isCategory.length > 0) {
+            const status = 400
+            const message = 'Make sure you removed all products using this category first.'
+            return {status, message}
+        } else {
+            const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/categories/${categoryId}`)
+            const message = "Category deleted."
+            return {status, message}
         }
 
-        
-    const storeByUserId = await getStoreById(userId, storeId)
-
-    if (!storeByUserId) {
-        const status = 403
-        return status
-    }
-    const {status} =  await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${storeId}/categories/${categoryId}`)
-    return status
 }

@@ -95,10 +95,15 @@ export const SizeForm : React.FC<SizeFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true)
-            await deleteSize(sizeId,storeId)
-            router.push(`/${storeId}/sizes`)
-            router.refresh()
-            toast.success("Size deleted.")
+            setLoading(true)
+            const {status, message} = await deleteSize(sizeId,storeId)
+            if ( status === 200) {
+                router.push(`/${storeId}/sizes`)
+                router.refresh()
+                toast.success(`${message}`)
+            } else {
+                toast.error(`${message}`)
+            }
         } catch (error) {
             toast.error("Make sure you removed all products and categories first.")
         } finally {
