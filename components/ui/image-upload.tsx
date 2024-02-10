@@ -9,6 +9,7 @@ import { ImagePlus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button"
 
 interface ImageUploadProps {
+    buttonName:string,
     disabled?: boolean,
     onChange : (value: string) => void,
     onRemove : (value: string) => void,
@@ -17,6 +18,7 @@ interface ImageUploadProps {
 }
 
 const ImageUpload : React.FC<ImageUploadProps> = ({
+    buttonName,
     disabled,
     onChange,
     onRemove,
@@ -72,7 +74,7 @@ const ImageUpload : React.FC<ImageUploadProps> = ({
                             onClick={onClick}
                         >
                             <ImagePlus className="h-4 w-4 mr-2" />
-                            Upload an image
+                            {buttonName}
                         </Button>
                     )
                 }}

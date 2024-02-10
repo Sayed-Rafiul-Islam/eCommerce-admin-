@@ -7,6 +7,7 @@ import { getStoreById } from "./store"
 interface NewProducts {
     name : string,
     price : number,
+    quantity : number,
     images : { url : string}[],
     storeId : string | string[],
     categoryId : string,
@@ -21,6 +22,7 @@ interface UpdatedProducts {
     productId : string | string[],
     name : string,
     price : number,
+    quantity : number,
     images : { url : string}[],
     storeId : string | string[],
     categoryId : string,
@@ -74,6 +76,7 @@ export const createProduct = async (
         !product.images || 
         product.images.length === 0 || 
         !product.price || 
+        !product.quantity || 
         !product.sizeId || 
         !product.storeId) {
         const status = 400
@@ -107,6 +110,7 @@ export const updateProduct = async (
         !updatedProducts.images || 
         updatedProducts.images.length === 0 || 
         !updatedProducts.price || 
+        !updatedProducts.quantity || 
         !updatedProducts.sizeId || 
         !updatedProducts.storeId || 
         !updatedProducts.productId ) {

@@ -32,6 +32,7 @@ interface Product {
     _id : string,
     name : string,
     price : number,
+    quantity : number,
     images : { url : string}[],
     storeId : string | string [],
     categoryId : string,
@@ -86,6 +87,7 @@ interface ProductFormProps {
 const formSchema = z.object({
     name : z.string().min(1),
     price : z.coerce.number().min(1),
+    quantity : z.coerce.number().min(1),
     images : z.object({ url : z.string() }).array(),
     categoryId : z.string().min(1),
     sizeId : z.string().min(1),
@@ -136,6 +138,7 @@ export const ProductForm : React.FC<ProductFormProps> = ({
                     productId,
                     name : data.name,
                     price : data.price,
+                    quantity : data.quantity,
                     images : data.images,
                     categoryId : data.categoryId,
                     storeId,
@@ -151,6 +154,7 @@ export const ProductForm : React.FC<ProductFormProps> = ({
                     storeId,
                     name : data.name,
                     price : data.price,
+                    quantity : data.quantity,
                     images : data.images,
                     categoryId : data.categoryId,
                     sizeId : data.sizeId,
@@ -224,6 +228,7 @@ export const ProductForm : React.FC<ProductFormProps> = ({
                                     <FormLabel>Images</FormLabel>
                                     <FormControl>
                                         <ImageUpload  
+                                            buttonName='Upload Images'
                                             value={field.value.map((image)=> image.url )}
                                             disabled={loading}
                                             onChange={(url)=>field.onChange([...field.value, { url }])}
@@ -256,6 +261,19 @@ export const ProductForm : React.FC<ProductFormProps> = ({
                                     <FormLabel>Price</FormLabel>
                                     <FormControl>
                                         <Input type='number' disabled={loading} placeholder='9.99' {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="quantity"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Quantity</FormLabel>
+                                    <FormControl>
+                                        <Input type='number' disabled={loading} placeholder='48' {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -341,7 +359,7 @@ export const ProductForm : React.FC<ProductFormProps> = ({
                                                 <SelectTrigger>
                                                     <SelectValue 
                                                         defaultValue={field.value}
-                                                        placeholder="Select a category"
+                                                        placeholder="Select a Color"
                                                     />
                                                 </SelectTrigger>
                                             </FormControl>
