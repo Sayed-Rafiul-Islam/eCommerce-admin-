@@ -1,18 +1,26 @@
 "use client"
+import { MenuIcon } from "lucide-react";
+import { Button } from "./button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
+
 
 import { useParams, usePathname } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { ThemeToggle } from "./theme-toggle";
+import { UserButton } from "@clerk/nextjs";
 
-export function MainNav({
+
+const NavbarToggle = ({
     className,
     ...props
-} : React.HtmlHTMLAttributes<HTMLElement>) {
+} : React.HtmlHTMLAttributes<HTMLElement>) => {
 
     const pathname = usePathname()
     const params = useParams()
 
+    
     const routes = [
         {
             href : `/${params.storeId}`,
@@ -67,24 +75,37 @@ export function MainNav({
             active : pathname === `/${params.storeId}/settings`
         },
     ]
-  return (
-    <nav 
-        className={cn("flex items-center space-x-6", className)}
-    >
-        {
-            routes.map((route)=>(
-                <Link 
-                    key={route.href} 
-                    href={route.href}
-                    className={cn(
-                        "text-sm font-medium transition-colors hover:text-primary ",
-                        route.active ? "text-black dark:text-white" : "text-muted-foreground" 
-                    )}
+    return ( 
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                    <MenuIcon />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="ml-4" align="end">
+            <nav 
+                    className={cn("flex flex-col", className)}
                 >
-                    {route.label}
-                </Link>
-            ))
-        }
-    </nav>
-  )
+                    {
+                        routes.map((route)=>(
+                            <DropdownMenuItem asChild >
+                            <Link 
+                                key={route.href} 
+                                href={route.href}
+                                className={cn(
+                                    "text-sm font-medium transition-colors hover:text-primary ",
+                                    route.active ? "text-black dark:text-white" : "text-muted-foreground" 
+                                )}
+                            >
+                                {route.label}
+                            </Link>
+                            </DropdownMenuItem>
+                        ))
+                    }
+            </nav>
+            </DropdownMenuContent>
+        </DropdownMenu>
+     );
 }
+ 
+export default NavbarToggle;

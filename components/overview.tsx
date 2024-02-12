@@ -10,7 +10,8 @@ const Overview : React.FC<OverviewProps> = ({
     data
 }) => {
     return ( 
-        <ResponsiveContainer width='100%' height={350}>
+        <div className='w-full flex-wrap overflow-x-scroll '>
+            <ResponsiveContainer width="120%" height={300} >
             <BarChart data={data}>
                 <XAxis
                     dataKey='name'
@@ -29,6 +30,7 @@ const Overview : React.FC<OverviewProps> = ({
                 <Bar dataKey='total' fill='#3498db' radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
+        </div>
      );
 }
  
