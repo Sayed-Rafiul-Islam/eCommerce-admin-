@@ -87,9 +87,8 @@ const NavbarToggle = ({
                 >
                     {
                         routes.map((route)=>(
-                            <DropdownMenuItem asChild >
+                            <DropdownMenuItem key={route.href}  asChild >
                             <Link 
-                                key={route.href} 
                                 href={route.href}
                                 className={cn(
                                     "text-sm font-medium transition-colors hover:text-primary ",
