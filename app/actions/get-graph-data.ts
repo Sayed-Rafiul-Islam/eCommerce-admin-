@@ -2,17 +2,11 @@ import axios from "axios"
 
 interface Item {
     orderedItem : {
-        _id : string,
+        productId : string,
         name : string,
-        isFeatured : boolean,
-        isArchieved : boolean,
         price : number,
-        createdAt : string,
-        categoryId : { name : string  },
-        sizeId : { name : string  },
-        colorId : { value : string  }
     },
-    _id : string
+    quantity : Number
 }
 
 interface Order {
@@ -45,7 +39,7 @@ export const getGraphData = async ( storeId : string ) => {
         let revenueForOrder : number = 0
 
         for (const item of order.orderedItems) {
-            revenueForOrder = revenueForOrder + parseFloat(item.orderedItem?.price)  
+            revenueForOrder = revenueForOrder + parseFloat(item.orderedItem?.price) * item.quantity  
         }
         monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder
 
