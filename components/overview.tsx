@@ -10,7 +10,7 @@ const Overview : React.FC<OverviewProps> = ({
     data
 }) => {
     return ( 
-        <div className='w-full flex-wrap overflow-x-scroll '>
+        <div className='w-full flex-wrap overflow-x-scroll lg:overflow-auto md:overflow-auto'>
             <ResponsiveContainer width="120%" height={300} >
             <BarChart data={data}>
                 <XAxis
