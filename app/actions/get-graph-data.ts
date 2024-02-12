@@ -45,7 +45,7 @@ export const getGraphData = async ( storeId : string ) => {
         let revenueForOrder : number = 0
 
         for (const item of order.orderedItems) {
-            revenueForOrder = revenueForOrder + parseFloat(item.orderedItem.price)  
+            revenueForOrder = revenueForOrder + parseFloat(item.orderedItem?.price)  
         }
         monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder
 
