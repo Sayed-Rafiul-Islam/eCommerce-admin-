@@ -63,14 +63,14 @@ export function DataTable<TData, TValue>({
                 className="max-w-sm"
             />
         </div>
-        <div className="rounded-md border">
-            <Table>
+        <div className="rounded-md border flex-wrap">
+            <Table className="overflow-scroll">
                 <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                         return (
-                        <TableHead key={header.id}>
+                        <TableHead key={header.id} className="px-12 text-center">
                             {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -91,7 +91,7 @@ export function DataTable<TData, TValue>({
                         data-state={row.getIsSelected() && "selected"}
                     >
                         {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
+                        <TableCell className="text-center" key={cell.id}>
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </TableCell>
                         ))}
